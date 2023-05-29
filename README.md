@@ -1,2 +1,2 @@
-# DeckoHack
-Hacks for Czech website decko.ceskatelevize.cz
+# Decko Hack
+Hacks for Czech website [Déčko](decko.ceskatelevize.cz)
