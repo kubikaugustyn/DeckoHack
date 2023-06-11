@@ -23,12 +23,12 @@ public class AmfConnector {
     // My own
     static amf amf = new amf();
 
-    static void init(String gatewayURL, String token) {
+    public static void init(String gatewayURL, String token) {
         AmfConnector.gatewayURL = gatewayURL;
         AmfConnector.token = token;
     }
 
-    static void getAppConfig(AmfConnectorCallback a) {
+    public static void getAppConfig(AmfConnectorCallback a) {
         VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetAppConfigResult(tmp));
         VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String d = "AppConfig/amf";
@@ -38,11 +38,11 @@ public class AmfConnector {
 
 
         // AMFConnection amf = new AMFConnection();
-        System.out.println("amf.call: " + AmfConnector.gatewayURL + d);
+        // System.out.println("amf.call: " + AmfConnector.gatewayURL + d);
         amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
     }
 
-    static void getTokenStatus(AmfConnectorCallback a) {
+    public static void getTokenStatus(AmfConnectorCallback a) {
         VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetTokenStatusResult(tmp));
         VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String d = "Token/amf";
@@ -54,7 +54,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
     }
 
-    static void killToken(AmfConnectorCallback a) {
+    public static void killToken(AmfConnectorCallback a) {
         VoidFunc<Object> b = tmp -> a.callback(AmfConnector.KillTokenResult(tmp));
         VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String d = "Token/amf";
@@ -66,7 +66,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
     }
 
-    static void getDate(AmfConnectorCallback a) {
+    public static void getDate(AmfConnectorCallback a) {
         VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetDateResult(tmp));
         VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String d = "ServerStatus/amf";
@@ -78,7 +78,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
     }
 
-    static void getAppStates(AmfConnectorCallback a) {
+    public static void getAppStates(AmfConnectorCallback a) {
         VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetAppStatesResult(tmp));
         VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String d = "AppState/amf";
@@ -90,7 +90,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
     }
 
-    static void saveAppState(AmfConnectorCallback a, int b, String c, Object d) {
+    public static void saveAppState(AmfConnectorCallback a, int b, String c, Object d) {
         VoidFunc<Object> e = tmp -> a.callback(AmfConnector.SaveAppStateResult(tmp));
         VoidFunc<Object> f = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String g = "AppState/amf";
@@ -105,7 +105,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + g, h, i, e, f);
     }
 
-    static void loadAppState(AmfConnectorCallback a, int b, String c, Object d) {
+    public static void loadAppState(AmfConnectorCallback a, int b, String c, Object d) {
         VoidFunc<Object> e = tmp -> a.callback(AmfConnector.LoadAppStateResult(tmp, d));
         VoidFunc<Object> f = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String g = "AppState/amf";
@@ -119,7 +119,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + g, h, i, e, f);
     }
 
-    static void removeAppState(AmfConnectorCallback a, int b) {
+    public static void removeAppState(AmfConnectorCallback a, int b) {
         VoidFunc<Object> c = tmp -> a.callback(AmfConnector.RemoveAppStateResult(tmp));
         VoidFunc<Object> d = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String e = "AppState/amf";
@@ -132,7 +132,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + e, f, g, c, d);
     }
 
-    static void saveRank(AmfConnectorCallback a, int b, int c, int d, int e, boolean f, String g) {
+    public static void saveRank(AmfConnectorCallback a, int b, int c, int d, int e, boolean f, String g) {
         VoidFunc<Object> h = tmp -> a.callback(AmfConnector.SaveRankResult(tmp));
         VoidFunc<Object> i = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String j = "Ranking/amf";
@@ -150,7 +150,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + j, k, l, h, i);
     }
 
-    static void getRanking(AmfConnectorCallback a) {
+    public static void getRanking(AmfConnectorCallback a) {
         VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetRankingResult(tmp));
         VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String d = "Ranking/amf";
@@ -162,7 +162,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
     }
 
-    static void sendMessage(AmfConnectorCallback a, String b, Object c, String d, String e, String f, String g, String h) {
+    public static void sendMessage(AmfConnectorCallback a, String b, Object c, String d, String e, String f, String g, String h) {
         VoidFunc<Object> i = tmp -> a.callback(AmfConnector.SendMessageResult(tmp));
         VoidFunc<Object> j = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String k = "Message/amf";
@@ -181,7 +181,7 @@ public class AmfConnector {
         amf.call(AmfConnector.gatewayURL + k, l, m, i, j);
     }
 
-    static void updateProfile(AmfConnectorCallback a, int b, String c, String d) {
+    public static void updateProfile(AmfConnectorCallback a, int b, String c, String d) {
         VoidFunc<Object> e = tmp -> a.callback(AmfConnector.UpdateProfileResult(tmp));
         VoidFunc<Object> f = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
         String g = "Profile/amf";
@@ -205,7 +205,7 @@ public class AmfConnector {
     }
 
     static AmfConnectorResult GetAppConfigResult(Object a) {
-        if (Objects.equals(((JSONArray) a).getJSONObject(0).getString("status"), "ERROR")) {
+        if (Objects.equals(((JSONArray) a).getJSONObject(0).optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -213,13 +213,13 @@ public class AmfConnector {
         }
         AmfConnectorResult.AppConfigResult b = new AmfConnectorResult.AppConfigResult();
         b.status = "OK";
-        b.config = a;
+        b.config = ((JSONArray) a).getJSONObject(0);
         return b;
     }
 
     static AmfConnectorResult GetAppStatesResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -241,7 +241,7 @@ public class AmfConnector {
 
     static AmfConnectorResult GetDateResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -255,7 +255,7 @@ public class AmfConnector {
 
     static AmfConnectorResult GetRankingResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -270,7 +270,7 @@ public class AmfConnector {
 
     static AmfConnectorResult GetTokenStatusResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("tokenStatus"), "dead")) {
+        if (Objects.equals(c.optString("tokenStatus"), "dead")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -283,7 +283,7 @@ public class AmfConnector {
 
     static AmfConnectorResult KillTokenResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("tokenStatus"), "noaction")) {
+        if (Objects.equals(c.optString("tokenStatus"), "noaction")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -295,31 +295,28 @@ public class AmfConnector {
     }
 
     static AmfConnectorResult LoadAppStateResult(Object a, Object b) {
-        Func<JSONArray, String> e = arr -> {
-            //for (var b = "", c = 0; c < a.length; c++)
-            //            b += String.fromCharCode(a[c]);
-            //        return b
-            int[] h = new int[arr.length()];
-            for (int i = 0; i < arr.length(); i++) h[i] = arr.getInt(i);
-            return new String(h, 0, arr.length());
-        };
-        Func<JSONArray, String> c = arr -> {
-            // return decodeURIComponent(escape(e(a)))
-            return URLDecoder.decode(URLEncoder.encode(e.get(arr), StandardCharsets.US_ASCII).replace("+", "%2B"), StandardCharsets.UTF_8)
-                    .replace("%2B", "+");
-        };
-        Func<JSONArray, String> d = arr -> {
+        //for (var b = "", c = 0; c < a.length; c++)
+        //            b += String.fromCharCode(a[c]);
+        //        return b
+        //int[] h = new int[arr.length];
+        //for (int i = 0; i < arr.length; i++) h[i] = arr[i] & 0xFF;
+        Func<byte[], String> e = arr -> new String(arr, StandardCharsets.UTF_8);
+        // return decodeURIComponent(escape(e(a)))
+        //return URLDecoder.decode(URLEncoder.encode(e.get(arr), StandardCharsets.US_ASCII).replace("+", "%2B"), StandardCharsets.UTF_8)
+        //        .replace("%2B", "+");
+        Func<byte[], String> c = e::get;
+        Func<byte[], String> d = arr -> {
             // var b = e(a)
             //          , c = btoa(b);
             //        return "data:image/png;base64," + c
             // String h = e.get(arr);
-            byte[] h = new byte[arr.length()];
-            for (int i = 0; i < arr.length(); i++) h[i] = (byte) arr.getInt(i);
-            String i = Base64.getEncoder().encodeToString(h);
+            //byte[] h = new byte[arr.length];
+            //for (int i = 0; i < arr.length; i++) h[i] = arr[i];
+            String i = Base64.getEncoder().encodeToString(arr);
             return "data:image/png;base64," + i;
         };
         JSONObject g = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(g.getString("status"), "ERROR")) {
+        if (Objects.equals(g.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult f = new AmfConnectorResult.ErrorResult();
             f.status = "ERROR";
             f.error = "wrong resource name, or invalid token";
@@ -329,15 +326,15 @@ public class AmfConnector {
         f.status = "OK";
         f.resourceType = (String) b;
         switch ((String) b) {
-            case "text" -> f.state = c.get(g.getJSONArray("state"));
-            case "image" -> f.image = d.get(g.getJSONArray("state"));
+            case "text" -> f.state = c.get((byte[]) g.get("state"));
+            case "image" -> f.image = d.get((byte[]) g.get("state"));
         }
         return f;
     }
 
     static AmfConnectorResult RemoveAppStateResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "slot does not exist, or invalid token";
@@ -351,7 +348,7 @@ public class AmfConnector {
 
     static AmfConnectorResult SaveAppStateResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -364,7 +361,7 @@ public class AmfConnector {
 
     static AmfConnectorResult SaveRankResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "slot does not exist, or invalid token";
@@ -378,7 +375,7 @@ public class AmfConnector {
 
     static AmfConnectorResult SendMessageResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "wrong message UUID, format, parameters, or invalid token";
@@ -395,7 +392,7 @@ public class AmfConnector {
 
     static AmfConnectorResult UpdateProfileResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
-        if (Objects.equals(c.getString("status"), "ERROR")) {
+        if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
             b.error = "invalid token";
@@ -404,5 +401,9 @@ public class AmfConnector {
         AmfConnectorResult.UpdateProfileResult b = new AmfConnectorResult.UpdateProfileResult();
         b.status = "OK";
         return b;
+    }
+
+    public static String getToken() {
+        return token;
     }
 }

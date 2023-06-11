@@ -2,7 +2,7 @@ package deckoapi.amf;
 
 import deckoapi.amf.message.*;
 import deckoapi.jshelper.XMLHttpRequest;
-import deckoapi.jshelper.XMLHttpRequestOnreadystatechangeListener;
+import gui.DeckoHack;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -26,7 +26,7 @@ public class amf {
         byte OBJECT_TYPE = 10;
         byte XMLSTRING_TYPE = 11;
         byte BYTEARRAY_TYPE = 12;
-        int AMF0_AMF3 = 17;
+        byte AMF0_AMF3 = 17;
         int UINT29_MASK = 536870911;
         int INT28_MAX_VALUE = 268435455;
         int INT28_MIN_VALUE = -268435456;
@@ -150,6 +150,7 @@ public class amf {
             boolean allow = false;
             if (this.requestPool.size() == a) {
                 b = new XMLHttpRequest<>();
+                b.timeout = this.requestTimeout;
                 b.parent = this;
                 b.busy = false;
                 allow = this.requestPool.add(b);
@@ -173,6 +174,7 @@ public class amf {
             boolean allow;
             if (this.requestPool.size() == a) {
                 b = new XMLHttpRequest<>();
+                b.timeout = this.requestTimeout;
                 b.parent = this;
                 b.busy = false;
                 allow = this.requestPool.add(b);
@@ -192,7 +194,7 @@ public class amf {
         a.message = e.writeMessage(b);
         a.onreadystatechange = req -> {
             if (req.readyState == 1) {
-                System.out.println("AAAA: " + req.busy);
+                // System.out.println("AAAA: " + req.busy);
                 if (!req.busy) {
                     req.busy = true;
                     req.setRequestHeader("Content-Type", "application/x-amf; charset=UTF-8");
@@ -204,20 +206,20 @@ public class amf {
                 };
                 try {
                     if (req.status >= 200 && req.status <= 300) {
-                        if (req.getResponseHeader("Content-type").contains("application/x-amf")) {
+                        if (req.getResponseHeader("Content-Type").contains("application/x-amf")) {
                             Deserializer b1 = new Deserializer(req.response);
                             Message e1 = b1.readMessage();
                             for (int i = 0; i < e1.bodies.size(); i++) {
                                 MessageBody g = e1.bodies.elementAt(i);
                                 if (g.targetURI != null && g.targetURI.contains("/onResult")) {
                                     if (g.targetURI.equals("/1/onResult")) {
-                                        req.parent.clientId = g.dataJSON.getString("clientId");
+                                        req.parent.clientId = g.dataJSON().getString("clientId");
                                         for (int h = 0; h < req.parent.messageQueue.size(); h++) {
-                                            req.parent.messageQueue.elementAt(h).msg.bodies.elementAt(0).dataJSON.put("clientId", req.parent.clientId);
+                                            req.parent.messageQueue.elementAt(h).msg.bodies.elementAt(0).dataJSON().put("clientId", req.parent.clientId);
                                         }
-                                    } else c.get(g.dataJSON.getString("body"));
-                                } else if (g.dataJSON.getString("_explicitType").equals("flex.messaging.messages.ErrorMessage")) {
-                                    d.get(new FaultInfo(g.dataJSON.getInt("faultCode"), g.dataJSON.getString("faultDetail"), g.dataJSON.getString("faultString")));
+                                    } else c.get(g.dataJSON().getString("body"));
+                                } else if (g.dataJSON().getString("_explicitType").equals("flex.messaging.messages.ErrorMessage")) {
+                                    d.get(new FaultInfo(g.dataJSON().getInt("faultCode"), g.dataJSON().getString("faultDetail"), g.dataJSON().getString("faultString")));
                                 }
                             }
                             req.busy = false;
@@ -230,6 +232,7 @@ public class amf {
                 }
             }
         };
+        DeckoHack.instance.setRequestHeaders(a, true); // Injected code...
         a.open("POST", this.endpoint, true);
     }
 
@@ -238,7 +241,7 @@ public class amf {
         a.message = e.writeMessage(b);
         a.onreadystatechange = req -> {
             if (req.readyState == 1) {
-                System.out.println("BBBB: " + req.busy);
+                // System.out.println("BBBB: " + req.busy);
                 if (!req.busy) {
                     req.busy = true;
                     req.setRequestHeader("Content-Type", "application/x-amf; charset=UTF-8");
@@ -249,15 +252,17 @@ public class amf {
                 req.onreadystatechange = a1 -> {
                 };
                 try {
+                    // System.err.println("Status: " + req.status);
                     if (req.status >= 200 && req.status <= 300) {
-                        if (req.getResponseHeader("Content-type").contains("application/x-amf")) {
+                        // System.err.println("Content-Type: " + req.getResponseHeader("Content-Type"));
+                        if (req.getResponseHeader("Content-Type").contains("application/x-amf")) {
                             Deserializer b1 = new Deserializer(req.response);
                             Message e1 = b1.readMessage();
                             for (int i = 0; i < e1.bodies.size(); i++) {
                                 MessageBody g = e1.bodies.elementAt(i);
-                                if (g.targetURI != null && g.targetURI.contains("/onResult")) c.get(g.dataJSON);
+                                if (g.targetURI != null && g.targetURI.contains("/onResult")) c.get(g.dataJSONArray());
                                 else
-                                    d.get(new FaultInfo(g.dataJSON.getInt("faultCode"), g.dataJSON.getString("faultDetail"), g.dataJSON.getString("faultString")));
+                                    d.get(new FaultInfo(g.dataJSON().getInt("faultCode"), g.dataJSON().getString("faultDetail"), g.dataJSON().getString("faultString")));
                             }
                             req.busy = false;
                             req.message = null;
@@ -265,10 +270,12 @@ public class amf {
                         } else d.get(new FaultInfo(1, req.responseText, ""));
                     } else d.get(new FaultInfo(1, req.responseText, ""));
                 } catch (Exception h) {
+                    h.printStackTrace();
                     d.get(new FaultInfo(2, "", ""));
                 }
             }
         };
+        DeckoHack.instance.setRequestHeaders(a, true); // Injected code...
         a.open("POST", this.endpoint, true);
     }
 

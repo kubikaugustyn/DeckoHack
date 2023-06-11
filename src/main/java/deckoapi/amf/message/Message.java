@@ -1,13 +1,12 @@
 package deckoapi.amf.message;
 
-import deckoapi.amf.Header;
 
 import java.util.Vector;
 
 public class Message {
     public String _explicitType;
     public short version;
-    public Vector<Header> headers;
+    public Vector<MessageHeader> headers;
     public Vector<MessageBody> bodies;
     public Vector<MessageBody> body;
     public String destination;

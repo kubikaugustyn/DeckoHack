@@ -13,7 +13,7 @@ public class AmfConnectorResult {
     }
 
     public static class AppConfigResult extends AmfConnectorResult {
-        public Object config;
+        public JSONObject config;
     }
 
     public static class AppStatesResult extends AmfConnectorResult {
@@ -22,6 +22,11 @@ public class AmfConnectorResult {
         public static class Slot {
             public int slotNumber;
             public String metadata;
+
+            @Override
+            public String toString() {
+                return "Slot #" + slotNumber + ": " + metadata;
+            }
         }
     }
 

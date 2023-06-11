@@ -1,10 +1,12 @@
 package deckoapi.amf;
 
 import deckoapi.amf.message.Message;
+import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class Writer {
@@ -24,8 +26,10 @@ public class Writer {
         this.objectCount = 0;
     }
 
-    private void write(byte a) {
+    void write(byte a) {
         this.data.add(a);
+//        Exception ex = new Exception("Write: " + a);
+//        ex.printStackTrace();
     }
 
     public void writeShort(short a) {
@@ -184,7 +188,7 @@ public class Writer {
     public void writeStringWithoutType(String a) {
         if (a.length() == 0) this.writeUInt29(1);
         else {
-            if (this.stringByReference(a) == 0) this.writeUTF(a, true);
+            if (this.stringByReference(a) == null) this.writeUTF(a, true);
         }
     }
 
@@ -252,8 +256,50 @@ public class Writer {
             if (a instanceof String) {
                 this.write(amf.CONST.STRING_TYPE);
                 this.writeStringWithoutType((String) a);
-            }
+            } else if (a instanceof JSONObject) {
+                this.writeMap((JSONObject) a);
+            } else if (a.getClass().isArray()) {
+                this.writeArray((Object[]) a);
+            } else if (a instanceof Number) {
+                int b = (int) a;
+                if (b >= 0 && b == (0 | b)) this.writeAmfInt(b);
+                else {
+                    this.write(amf.CONST.DOUBLE_TYPE);
+                    this.writeDouble(b);
+                }
+            } else System.err.println("TODO");
             //else if (a instanceof Number) ...
         }
+    }
+
+    private void writeMap(JSONObject a) {
+        this.write(amf.CONST.OBJECT_TYPE);
+        if (this.objectByReference(a) == null) {
+            this.writeUInt29(11);
+            this.traitCount++;
+            this.writeStringWithoutType(amf.CONST.EMPTY_STRING);
+            for (Iterator<String> it = a.keys(); it.hasNext(); ) {
+                String b = it.next();
+                this.writeStringWithoutType(b == null ? amf.CONST.EMPTY_STRING : b);
+                this.writeObject(a.get(b));
+            }
+            this.writeStringWithoutType(amf.CONST.EMPTY_STRING);
+        }
+    }
+
+    private void writeArray(Object[] a) {
+        this.write(amf.CONST.ARRAY_TYPE);
+        if (this.objectByReference(a) == null) {
+            this.writeUInt29(a.length << 1 | 1);
+            this.writeUInt29(1);
+        }
+        for (Object b : a) this.writeObject(b);
+    }
+
+    public byte[] data() {
+        byte[] bytes = new byte[this.data.size()];
+        int i = 0;
+        for (Byte b : data) bytes[i++] = b;
+        return bytes;
     }
 }
