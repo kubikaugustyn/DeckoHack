@@ -13,9 +13,17 @@ import java.util.Iterator;
 // From: https://decko.ceskatelevize.cz/cms/icontainerjs/js/IntegrativeContainerJS.min.js?v=1.0.0.287
 // Just part
 public class IntegrativeContainer {
-    public static String url;
+    public String url;
+    public DpCont dpCont;
+    public AmfConnector amfConnector;
+    public JSONObject appRequestJSON;
 
-    public static void sendAppRequest(String a, String b, JSONObject c, String d, VoidFuncBlank e) {
+    public IntegrativeContainer() {
+        dpCont = new DpCont();
+        amfConnector = new AmfConnector();
+    }
+
+    public void sendAppRequest(String a, String b, JSONObject c, String d, VoidFuncBlank e) {
         if (!b.startsWith("https://")) b = "https://decko.ceskatelevize.cz" + b;
         url = b;
         if (d != null) url += "?" + d;
@@ -32,6 +40,7 @@ public class IntegrativeContainer {
             System.err.println("FlashAppError:");
             ex.printStackTrace();
         }, response -> {
+            appRequestJSON = response;
             startIc(response.getJSONObject("flashvars"));
             if (e != null) e.get();
         }, con -> {
@@ -39,23 +48,24 @@ public class IntegrativeContainer {
             XMLHttpRequest<IntegrativeContainer> request = new XMLHttpRequest<>();
             request.open("", "", false);
             DeckoHack.instance.setRequestHeaders(request, true);
-            for (String key : request.getRequestHeaders().keySet()) con.setRequestProperty(key, request.getRequestHeaders().get(key));
+            for (String key : request.getRequestHeaders().keySet())
+                con.setRequestProperty(key, request.getRequestHeaders().get(key));
         });
     }
 
-    public static void startIc(JSONObject a) {
+    public void startIc(JSONObject a) {
         // System.out.println("StartIC: " + a.toString());
-        AmfConnector.init(a.getString("amfUrl"), a.getString("token"));
+        amfConnector.init(a.getString("amfUrl"), a.getString("token"));
         // AmfConnector.init("https://webhook.site/6aec3577-ac8f-446a-99d3-bcf5cff5621b/", a.getString("token"));
-        AmfConnector.getAppConfig(IntegrativeContainer::getAppCongifCallback);
+        amfConnector.getAppConfig(this::getAppCongifCallback);
     }
 
-    public static DpCont.ContManager getAppCongifCallback(AmfConnectorResult a) {
+    public DpCont.ContManager getAppCongifCallback(AmfConnectorResult a) {
         // System.out.println("getAppCongifCallback: " + a);
-        if (DpCont.dpCont != null) return DpCont.dpCont;
+        if (dpCont.dpCont != null) return dpCont.dpCont;
         if ("OK".equals(a.status)) {
             // System.out.println("Got app config: " + ((AmfConnectorResult.AppConfigResult) a).config.toString());
-            return DpCont.dpCont = new DpCont.ContManager(((AmfConnectorResult.AppConfigResult) a).config);
+            return dpCont.dpCont = new DpCont.ContManager(dpCont, ((AmfConnectorResult.AppConfigResult) a).config);
         }// else System.out.println("Failed app config: " + a.status);
         return null;
     }

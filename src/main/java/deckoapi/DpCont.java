@@ -7,28 +7,28 @@ import java.util.Vector;
 // From: https://decko.ceskatelevize.cz/cms/icontainerjs/js/IntegrativeContainerJS.min.js?v=1.0.0.287
 // Just part
 public class DpCont {
-    public static ContManager dpCont;
-    private static final Vector<DpContReadyListener> readyListeners;
+    public ContManager dpCont;
+    private final Vector<DpContReadyListener> readyListeners;
+
+    DpCont() {
+        readyListeners = new Vector<>();
+    }
 
     public static class ContManager {
-        public ContManager() {
-        }
+        DpCont dpCont;
 
-        public ContManager(JSONObject a) {
+        public ContManager(DpCont cont, JSONObject a) {
+            dpCont = cont;
             System.out.println("new ContManager: " + a.toString());
-            DpCont.onReady();
+            dpCont.onReady();
         }
     }
 
-    private static void onReady() {
+    private void onReady() {
         for (DpContReadyListener listener : readyListeners) listener.onReady();
     }
 
-    public static void addReadyListener(DpContReadyListener listener) {
+    public void addReadyListener(DpContReadyListener listener) {
         readyListeners.add(listener);
-    }
-
-    static {
-        readyListeners = new Vector<>();
     }
 }

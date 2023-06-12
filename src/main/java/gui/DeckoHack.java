@@ -13,6 +13,8 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import rufus.lzstring4java.LZString;
@@ -59,10 +61,6 @@ public class DeckoHack extends JFrame {
         GameHacks.initSize(this);
         this.loadCredentials();
         this.tryLogin();
-    }
-
-    private void onAppReady() {
-        this.setVisible(true);
     }
 
     private void acquireBaseCookies() {
@@ -155,10 +153,9 @@ public class DeckoHack extends JFrame {
     }
 
     private void onLoggedIn() {
-        DpCont.addReadyListener(this::onAppReady);
+        this.setVisible(true);
+        //for (GameHacks hacks : gameHacks.values()) hacks.init();
         //deckoHack.show();
-        // For: https://decko.ceskatelevize.cz/flashAppIframe/ff1af0a6-7386-49be-9b85-6d06a1c72788?closeButtonEnabled=false
-        IntegrativeContainer.sendAppRequest("ff1af0a6-7386-49be-9b85-6d06a1c72788", "/rest/Token/flashVars", null, "closeButtonEnabled=false", null);
         //AmfConnector.killToken(res -> System.out.println("Killed token: " + res.status));
     }
 
@@ -175,13 +172,11 @@ public class DeckoHack extends JFrame {
         JPanel games = new JPanel();
         games.setLayout(new BoxLayout(games, BoxLayout.Y_AXIS));
         for (int i = 0; i < gameHacks.size(); i++) {
-            JButton button = new JButton((String) gameHacks.keySet().toArray()[i]);
+            String name = (String) gameHacks.keySet().toArray()[i];
+            JButton button = new JButton(name);
             button.setAlignmentX(Component.LEFT_ALIGNMENT);
-            button.addChangeListener(new ChangeListener() {
-                @Override
-                public void stateChanged(ChangeEvent e) {
-                    // TODO onClick --> show
-                }
+            button.addActionListener(e -> {
+                gameHacks.get(name).start();
             });
             games.add(button);
         }
@@ -248,6 +243,14 @@ public class DeckoHack extends JFrame {
         if (r.length() >= 2 && r.substring(r.length() - 2, r.length()).equals("; "))
             r.delete(r.length() - 2, r.length());
         return r.toString();
+    }
+
+    public static void openWebsite(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (URISyntaxException | IOException ex) {
+            //It looks like there's a problem
+        }
     }
 
     static {

@@ -15,130 +15,130 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Objects;
 
-// From https://decko.ceskatelevize.cz/cms/common/js/AmfConnector.min.js
+// From https://decko.ceskatelevize.cz/cms/common/js/this.min.js
 public class AmfConnector {
-    static String VERSION = "1.0.0";
-    static String gatewayURL = "";
-    static String token = "";
+    String VERSION = "1.0.0";
+    String gatewayURL = "";
+    String token = "";
     // My own
     static amf amf = new amf();
 
-    public static void init(String gatewayURL, String token) {
-        AmfConnector.gatewayURL = gatewayURL;
-        AmfConnector.token = token;
+    public void init(String gatewayURL, String token) {
+        this.gatewayURL = gatewayURL;
+        this.token = token;
     }
 
-    public static void getAppConfig(AmfConnectorCallback a) {
-        VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetAppConfigResult(tmp));
-        VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void getAppConfig(AmfConnectorCallback a) {
+        VoidFunc<Object> b = tmp -> a.callback(this.GetAppConfigResult(tmp));
+        VoidFunc<Object> c = tmp -> a.callback(this.ErrorResult(tmp));
         String d = "AppConfig/amf";
         String e = "getAppConfig";
         JSONObject f = new JSONObject();
-        f.put("token", AmfConnector.token);
+        f.put("token", this.token);
 
 
         // AMFConnection amf = new AMFConnection();
-        // System.out.println("amf.call: " + AmfConnector.gatewayURL + d);
-        amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
+        // System.out.println("amf.call: " + this.gatewayURL + d);
+        amf.call(this.gatewayURL + d, e, f, b, c);
     }
 
-    public static void getTokenStatus(AmfConnectorCallback a) {
-        VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetTokenStatusResult(tmp));
-        VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void getTokenStatus(AmfConnectorCallback a) {
+        VoidFunc<Object> b = tmp -> a.callback(this.GetTokenStatusResult(tmp));
+        VoidFunc<Object> c = tmp -> a.callback(this.ErrorResult(tmp));
         String d = "Token/amf";
         String e = "getStatus";
         JSONObject f = new JSONObject();
-        f.put("token", AmfConnector.token);
+        f.put("token", this.token);
 
 
-        amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
+        amf.call(this.gatewayURL + d, e, f, b, c);
     }
 
-    public static void killToken(AmfConnectorCallback a) {
-        VoidFunc<Object> b = tmp -> a.callback(AmfConnector.KillTokenResult(tmp));
-        VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void killToken(AmfConnectorCallback a) {
+        VoidFunc<Object> b = tmp -> a.callback(this.KillTokenResult(tmp));
+        VoidFunc<Object> c = tmp -> a.callback(this.ErrorResult(tmp));
         String d = "Token/amf";
         String e = "killToken";
         JSONObject f = new JSONObject();
-        f.put("token", AmfConnector.token);
+        f.put("token", this.token);
 
 
-        amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
+        amf.call(this.gatewayURL + d, e, f, b, c);
     }
 
-    public static void getDate(AmfConnectorCallback a) {
-        VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetDateResult(tmp));
-        VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void getDate(AmfConnectorCallback a) {
+        VoidFunc<Object> b = tmp -> a.callback(this.GetDateResult(tmp));
+        VoidFunc<Object> c = tmp -> a.callback(this.ErrorResult(tmp));
         String d = "ServerStatus/amf";
         String e = "getServerStatus";
         JSONObject f = new JSONObject();
-        f.put("token", AmfConnector.token);
+        f.put("token", this.token);
 
 
-        amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
+        amf.call(this.gatewayURL + d, e, f, b, c);
     }
 
-    public static void getAppStates(AmfConnectorCallback a) {
-        VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetAppStatesResult(tmp));
-        VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void getAppStates(AmfConnectorCallback a) {
+        VoidFunc<Object> b = tmp -> a.callback(this.GetAppStatesResult(tmp));
+        VoidFunc<Object> c = tmp -> a.callback(this.ErrorResult(tmp));
         String d = "AppState/amf";
         String e = "getAppStates";
         JSONObject f = new JSONObject();
-        f.put("token", AmfConnector.token);
+        f.put("token", this.token);
 
 
-        amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
+        amf.call(this.gatewayURL + d, e, f, b, c);
     }
 
-    public static void saveAppState(AmfConnectorCallback a, int b, String c, Object d) {
-        VoidFunc<Object> e = tmp -> a.callback(AmfConnector.SaveAppStateResult(tmp));
-        VoidFunc<Object> f = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void saveAppState(AmfConnectorCallback a, int b, String c, Object d) {
+        VoidFunc<Object> e = tmp -> a.callback(this.SaveAppStateResult(tmp));
+        VoidFunc<Object> f = tmp -> a.callback(this.ErrorResult(tmp));
         String g = "AppState/amf";
         String h = "saveAppState";
         JSONObject i = new JSONObject();
-        i.put("token", AmfConnector.token);
+        i.put("token", this.token);
         i.put("slotNumber", b);
         i.put("metaData", c);
         i.put("data", d);
 
 
-        amf.call(AmfConnector.gatewayURL + g, h, i, e, f);
+        amf.call(this.gatewayURL + g, h, i, e, f);
     }
 
-    public static void loadAppState(AmfConnectorCallback a, int b, String c, Object d) {
-        VoidFunc<Object> e = tmp -> a.callback(AmfConnector.LoadAppStateResult(tmp, d));
-        VoidFunc<Object> f = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void loadAppState(AmfConnectorCallback a, int b, String c, Object d) {
+        VoidFunc<Object> e = tmp -> a.callback(this.LoadAppStateResult(tmp, d));
+        VoidFunc<Object> f = tmp -> a.callback(this.ErrorResult(tmp));
         String g = "AppState/amf";
         String h = "loadAppState";
         JSONObject i = new JSONObject();
-        i.put("token", AmfConnector.token);
+        i.put("token", this.token);
         i.put("slotNumber", b);
         i.put("resourceName", c);
 
 
-        amf.call(AmfConnector.gatewayURL + g, h, i, e, f);
+        amf.call(this.gatewayURL + g, h, i, e, f);
     }
 
-    public static void removeAppState(AmfConnectorCallback a, int b) {
-        VoidFunc<Object> c = tmp -> a.callback(AmfConnector.RemoveAppStateResult(tmp));
-        VoidFunc<Object> d = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void removeAppState(AmfConnectorCallback a, int b) {
+        VoidFunc<Object> c = tmp -> a.callback(this.RemoveAppStateResult(tmp));
+        VoidFunc<Object> d = tmp -> a.callback(this.ErrorResult(tmp));
         String e = "AppState/amf";
         String f = "removeAppState";
         JSONObject g = new JSONObject();
-        g.put("token", AmfConnector.token);
+        g.put("token", this.token);
         g.put("slotNumber", b);
 
 
-        amf.call(AmfConnector.gatewayURL + e, f, g, c, d);
+        amf.call(this.gatewayURL + e, f, g, c, d);
     }
 
-    public static void saveRank(AmfConnectorCallback a, int b, int c, int d, int e, boolean f, String g) {
-        VoidFunc<Object> h = tmp -> a.callback(AmfConnector.SaveRankResult(tmp));
-        VoidFunc<Object> i = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void saveRank(AmfConnectorCallback a, int b, int c, int d, int e, boolean f, String g) {
+        VoidFunc<Object> h = tmp -> a.callback(this.SaveRankResult(tmp));
+        VoidFunc<Object> i = tmp -> a.callback(this.ErrorResult(tmp));
         String j = "Ranking/amf";
         String k = "saveRank";
         JSONObject l = new JSONObject();
-        l.put("token", AmfConnector.token);
+        l.put("token", this.token);
         l.put("score", b);
         l.put("slotNumber", c);
         l.put("time", d);
@@ -147,28 +147,28 @@ public class AmfConnector {
         l.put("answer", g);
 
 
-        amf.call(AmfConnector.gatewayURL + j, k, l, h, i);
+        amf.call(this.gatewayURL + j, k, l, h, i);
     }
 
-    public static void getRanking(AmfConnectorCallback a) {
-        VoidFunc<Object> b = tmp -> a.callback(AmfConnector.GetRankingResult(tmp));
-        VoidFunc<Object> c = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void getRanking(AmfConnectorCallback a) {
+        VoidFunc<Object> b = tmp -> a.callback(this.GetRankingResult(tmp));
+        VoidFunc<Object> c = tmp -> a.callback(this.ErrorResult(tmp));
         String d = "Ranking/amf";
         String e = "getRanking";
         JSONObject f = new JSONObject();
-        f.put("token", AmfConnector.token);
+        f.put("token", this.token);
 
 
-        amf.call(AmfConnector.gatewayURL + d, e, f, b, c);
+        amf.call(this.gatewayURL + d, e, f, b, c);
     }
 
-    public static void sendMessage(AmfConnectorCallback a, String b, Object c, String d, String e, String f, String g, String h) {
-        VoidFunc<Object> i = tmp -> a.callback(AmfConnector.SendMessageResult(tmp));
-        VoidFunc<Object> j = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void sendMessage(AmfConnectorCallback a, String b, Object c, String d, String e, String f, String g, String h) {
+        VoidFunc<Object> i = tmp -> a.callback(this.SendMessageResult(tmp));
+        VoidFunc<Object> j = tmp -> a.callback(this.ErrorResult(tmp));
         String k = "Message/amf";
         String l = "sendMessage";
         JSONObject m = new JSONObject();
-        m.put("token", AmfConnector.token);
+        m.put("token", this.token);
         m.put("messageTypeUiud", b);
         m.put("params", c);
         m.put("receiver", d);
@@ -178,25 +178,25 @@ public class AmfConnector {
         m.put("replyTo", h);
 
 
-        amf.call(AmfConnector.gatewayURL + k, l, m, i, j);
+        amf.call(this.gatewayURL + k, l, m, i, j);
     }
 
-    public static void updateProfile(AmfConnectorCallback a, int b, String c, String d) {
-        VoidFunc<Object> e = tmp -> a.callback(AmfConnector.UpdateProfileResult(tmp));
-        VoidFunc<Object> f = tmp -> a.callback(AmfConnector.ErrorResult(tmp));
+    public void updateProfile(AmfConnectorCallback a, int b, String c, String d) {
+        VoidFunc<Object> e = tmp -> a.callback(this.UpdateProfileResult(tmp));
+        VoidFunc<Object> f = tmp -> a.callback(this.ErrorResult(tmp));
         String g = "Profile/amf";
         String h = "updateProfile";
         JSONObject i = new JSONObject();
-        i.put("token", AmfConnector.token);
+        i.put("token", this.token);
         i.put("slotNumber", b);
         i.put("resourceName", c);
         i.put("gender", d);
 
 
-        amf.call(AmfConnector.gatewayURL + g, h, i, e, f);
+        amf.call(this.gatewayURL + g, h, i, e, f);
     }
 
-    static AmfConnectorResult ErrorResult(Object a) {
+    AmfConnectorResult ErrorResult(Object a) {
         AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
         b.status = "ERROR";
         b.error = "amf status error";
@@ -204,7 +204,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult GetAppConfigResult(Object a) {
+    AmfConnectorResult GetAppConfigResult(Object a) {
         if (Objects.equals(((JSONArray) a).getJSONObject(0).optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
             b.status = "ERROR";
@@ -217,7 +217,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult GetAppStatesResult(Object a) {
+    AmfConnectorResult GetAppStatesResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -239,7 +239,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult GetDateResult(Object a) {
+    AmfConnectorResult GetDateResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -253,7 +253,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult GetRankingResult(Object a) {
+    AmfConnectorResult GetRankingResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -268,7 +268,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult GetTokenStatusResult(Object a) {
+    AmfConnectorResult GetTokenStatusResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("tokenStatus"), "dead")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -281,7 +281,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult KillTokenResult(Object a) {
+    AmfConnectorResult KillTokenResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("tokenStatus"), "noaction")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -294,7 +294,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult LoadAppStateResult(Object a, Object b) {
+    AmfConnectorResult LoadAppStateResult(Object a, Object b) {
         //for (var b = "", c = 0; c < a.length; c++)
         //            b += String.fromCharCode(a[c]);
         //        return b
@@ -322,6 +322,12 @@ public class AmfConnector {
             f.error = "wrong resource name, or invalid token";
             return f;
         }
+        if (!g.has("state")) { // Injected code...
+            AmfConnectorResult.ErrorResult f = new AmfConnectorResult.ErrorResult();
+            f.status = "ERROR";
+            f.error = "Response doesn't have state!";
+            return f;
+        }
         AmfConnectorResult.LoadAppStateResult f = new AmfConnectorResult.LoadAppStateResult();
         f.status = "OK";
         f.resourceType = (String) b;
@@ -332,7 +338,7 @@ public class AmfConnector {
         return f;
     }
 
-    static AmfConnectorResult RemoveAppStateResult(Object a) {
+    AmfConnectorResult RemoveAppStateResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -346,7 +352,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult SaveAppStateResult(Object a) {
+    AmfConnectorResult SaveAppStateResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -359,7 +365,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult SaveRankResult(Object a) {
+    AmfConnectorResult SaveRankResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -373,7 +379,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult SendMessageResult(Object a) {
+    AmfConnectorResult SendMessageResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -390,7 +396,7 @@ public class AmfConnector {
         return b;
     }
 
-    static AmfConnectorResult UpdateProfileResult(Object a) {
+    AmfConnectorResult UpdateProfileResult(Object a) {
         JSONObject c = ((JSONArray) a).getJSONObject(0);
         if (Objects.equals(c.optString("status"), "ERROR")) {
             AmfConnectorResult.ErrorResult b = new AmfConnectorResult.ErrorResult();
@@ -403,7 +409,7 @@ public class AmfConnector {
         return b;
     }
 
-    public static String getToken() {
+    public String getToken() {
         return token;
     }
 }
