@@ -1,19 +1,15 @@
 package deckoapi.game;
 
-import deckoapi.AmfConnectorCallback;
 import deckoapi.AmfConnectorResult;
-import deckoapi.DpCont;
 import deckoapi.IntegrativeContainer;
-import deckoapi.amf.message.Func;
-import deckoapi.game.ff1af0a6_7386_49be_9b85_6d06a1c72788.KutejDarkySpunte;
 import gui.NoSuchGameDataDialog;
-import rufus.lzstring4java.LZString;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Vector;
 
 public abstract class GameHacks extends JFrame {
@@ -41,7 +37,7 @@ public abstract class GameHacks extends JFrame {
 
     public void start() {
         if (!initialised) {
-            IC.dpCont.addReadyListener(() -> this.setInitialised(true));
+            IC.dpCont.addReadyListener(this::initialised);
             IC.dpCont.addReadyListener(this::dpContReady);
             IC.dpCont.addReadyListener(this::checkSlots);
             initIC();
@@ -50,8 +46,8 @@ public abstract class GameHacks extends JFrame {
         this.checkSlots();
     }
 
-    private void setInitialised(boolean initialised) {
-        this.initialised = initialised;
+    private void initialised() {
+        this.initialised = true;
     }
 
     public void checkSlots() {
@@ -63,10 +59,7 @@ public abstract class GameHacks extends JFrame {
             System.out.println(result.status);
             AmfConnectorResult.AppStatesResult appStatesResult = (AmfConnectorResult.AppStatesResult) result;
             slots.clear();
-            for (AmfConnectorResult.AppStatesResult.Slot slot : appStatesResult.slots) {
-                System.out.println(slot);
-                slots.add(slot);
-            }
+            slots.addAll(Arrays.asList(appStatesResult.slots));
             if (slots.size() == 0) noSuchData();
             else {
                 this.loadData();

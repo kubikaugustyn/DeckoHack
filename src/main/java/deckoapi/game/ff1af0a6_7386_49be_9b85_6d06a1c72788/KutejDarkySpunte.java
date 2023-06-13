@@ -12,11 +12,13 @@ import rufus.lzstring4java.LZString;
 import java.awt.*;
 
 public class KutejDarkySpunte extends GameHacks {
+    private Engine engine;
     private String resourcesURL = "https://decko.ceskatelevize.cz/rest/FileStore/FLASH_APP_DATA_PACKAGES/FILE-3294430!";
     public Game game;
 
     public KutejDarkySpunte() {
         super("Kutej dárky, špunte!", "https://decko.ceskatelevize.cz/flashAppIframe/ff1af0a6-7386-49be-9b85-6d06a1c72788?closeButtonEnabled=false");
+        engine = new Engine();
         this.initComponents();
     }
 
@@ -60,7 +62,13 @@ public class KutejDarkySpunte extends GameHacks {
     }
 
     private void parseGameConfigs(JSONObject mediaConfig, JSONObject gameConfig) {
+        System.out.println(mediaConfig);
+        System.out.println(gameConfig);
+        System.out.println("Parsing game");
         game = new Game(gameConfig, mediaConfig);
+        System.out.println("Game parsed");
+        engine.worldGenerator.game = game;
+        System.out.println(game);
     }
 
     @Override
@@ -75,11 +83,11 @@ public class KutejDarkySpunte extends GameHacks {
 
     @Override
     protected void loadData() {
-        for (AmfConnectorResult.AppStatesResult.Slot slot : slots) {
+        /*for (AmfConnectorResult.AppStatesResult.Slot slot : slots) {
             System.out.println(slot);
             AmfConnectorCallback callback = res -> {
                 if (errorResult(res)) return;
-                System.out.println(res.status);
+                System.out.println("AppStateCallback: " + res.status);
                 AmfConnectorResult.LoadAppStateResult appStateResult = (AmfConnectorResult.LoadAppStateResult) res;
                 System.out.println(appStateResult.resourceType);
                 System.out.println(appStateResult.state);
@@ -92,11 +100,69 @@ public class KutejDarkySpunte extends GameHacks {
             IC.amfConnector.loadAppState(callback, slot.slotNumber, "tileTypeCodeMap", "text");
         }
 
-        IC.amfConnector.getTokenStatus(res -> System.out.println("Token: " + res.status + " (" + IC.amfConnector.getToken() + ")"));
+        IC.amfConnector.getTokenStatus(res -> System.out.println("Token: " + res.status + " (" + IC.amfConnector.getToken() + ")"));*/
+        load();
     }
 
     @Override
     protected void saveData() {
 
+    }
+
+    void load() {
+        IC.amfConnector.loadAppState(this::onStartSeedLoad, 0, "startSeed", "text");
+    }
+
+    void onStartSeedLoad(AmfConnectorResult result) {
+        if (errorResult(result)) loadFailed(result);
+        else {
+            AmfConnectorResult.LoadAppStateResult appState = (AmfConnectorResult.LoadAppStateResult) result;
+            engine.startSeed = Float.parseFloat(appState.state);
+            engine.seed = engine.startSeed;
+            IC.amfConnector.loadAppState(this::onHeroLoad, 0, "hero", "text");
+        }
+    }
+
+    void onHeroLoad(AmfConnectorResult result) {
+        if (errorResult(result)) loadFailed(result);
+        else {
+            AmfConnectorResult.LoadAppStateResult appState = (AmfConnectorResult.LoadAppStateResult) result;
+            JSONObject heroJson = new JSONObject(LZString.decompressFromUTF16(appState.state));
+            engine.hero = new Hero(heroJson);
+            engine.worldGenerator.generateWorldConfig();
+            IC.amfConnector.loadAppState(this::onShadowMapLoad, 0, "shadowMap", "text");
+        }
+    }
+
+    void onShadowMapLoad(AmfConnectorResult result) {
+        if (errorResult(result)) loadFailed(result);
+        else {
+            AmfConnectorResult.LoadAppStateResult appState = (AmfConnectorResult.LoadAppStateResult) result;
+            engine.shadowMap = mapPreprocessor(engine.shadowMap, LZString.decompressFromUTF16(appState.state));
+            IC.amfConnector.loadAppState(this::onTileTypeCodeMapLoad, 0, "tileTypeCodeMap", "text");
+        }
+    }
+
+    void onTileTypeCodeMapLoad(AmfConnectorResult result) {
+        if (errorResult(result)) loadFailed(result);
+        else {
+            AmfConnectorResult.LoadAppStateResult appState = (AmfConnectorResult.LoadAppStateResult) result;
+            engine.tileTypeCodeMap = mapPreprocessor(engine.tileTypeCodeMap, LZString.decompressFromUTF16(appState.state));
+            startLevel();
+        }
+    }
+
+    void loadFailed(AmfConnectorResult result) {
+        System.out.println("Load failed");
+    }
+
+    void startLevel() {
+        System.out.println("Start level");
+    }
+
+    String mapPreprocessor(String a, String b) {
+        StringBuilder result = new StringBuilder(a);
+        for (int i = 0; i < b.length(); i++) if (b.charAt(i) != '#') result.setCharAt(i, b.charAt(i));
+        return result.toString();
     }
 }

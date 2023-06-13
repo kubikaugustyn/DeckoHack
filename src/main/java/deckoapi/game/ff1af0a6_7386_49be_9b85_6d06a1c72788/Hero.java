@@ -58,7 +58,7 @@ public class Hero {
         JSONObject helpObj = h.getJSONObject("help");
         help = new HashMap<>(helpObj.length());
         for (String name : helpObj.keySet()) help.put(name, helpObj.getBoolean(name));
-        JSONObject invObj = h.getJSONObject("artifacts");
+        JSONObject invObj = h.getJSONObject("inventory");
         inventory = new HeroInventory() {{
             sonar = invObj.getInt("sonar");
             tnt = invObj.getInt("tnt");
@@ -73,10 +73,11 @@ public class Hero {
         mainTeleportVisible = h.getBoolean("mainTeleportVisible");
         money = h.getInt("money");
         music = h.getString("music");
+        JSONObject posObj = h.getJSONObject("pos");
         pos = new HeroPos() {{
-            col = h.getInt("col");
-            row = h.getInt("row");
-            dir = h.getString("dir");
+            col = posObj.getInt("col");
+            row = posObj.getInt("row");
+            dir = posObj.getString("dir");
         }};
         JSONObject upgradesObj = h.getJSONObject("upgrades");
         upgrades = new HashMap<>(upgradesObj.length());
