@@ -9,12 +9,14 @@ import gui.DeckoHack;
 import org.json.JSONObject;
 import rufus.lzstring4java.LZString;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class KutejDarkySpunte extends GameHacks {
     private Engine engine;
     private String resourcesURL = "https://decko.ceskatelevize.cz/rest/FileStore/FLASH_APP_DATA_PACKAGES/FILE-3294430!";
     public Game game;
+    private MapEditorPane MapEditorPane;
 
     public KutejDarkySpunte() {
         super("Kutej dárky, špunte!", "https://decko.ceskatelevize.cz/flashAppIframe/ff1af0a6-7386-49be-9b85-6d06a1c72788?closeButtonEnabled=false");
@@ -79,6 +81,11 @@ public class KutejDarkySpunte extends GameHacks {
         this.setTitle(fixUTF("Kutej Dárky, Špunte!"));
         this.setName("KutejDarkySpunteFrame");
         this.setIconImage(DeckoHack.getImage("KutejDarkySpunte/favicon.png"));
+        JTabbedPane jTabbedPane1 = new JTabbedPane();
+        this.MapEditorPane = new MapEditorPane();
+        jTabbedPane1.addTab("Editor mapy", new ImageIcon(DeckoHack.getImage("KutejDarkySpunte/MapEditor.png")), this.MapEditorPane);
+        jTabbedPane1.setMinimumSize(new Dimension(400, 400));
+        add(jTabbedPane1);
     }
 
     @Override

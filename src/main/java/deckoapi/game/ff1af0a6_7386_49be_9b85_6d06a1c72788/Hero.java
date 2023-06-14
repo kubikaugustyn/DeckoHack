@@ -9,7 +9,7 @@ import java.util.Vector;
 
 public class Hero {
     public HashMap<String, HeroAchievement> achievments;
-    public HashMap<String, Vector<Number>> artifacts;
+    public HashMap<String, Vector<String>> artifacts;
     public Vector<String> backpack;
     public String color;
     public int energyUnits;
@@ -45,9 +45,9 @@ public class Hero {
         JSONObject artifactsObj = h.getJSONObject("artifacts");
         artifacts = new HashMap<>(artifactsObj.length());
         for (String name : artifactsObj.keySet()) {
-            Vector<Number> values = new Vector<>();
+            Vector<String> values = new Vector<>();
             for (int i = 0; i < artifactsObj.getJSONArray(name).length(); i++)
-                values.add(artifactsObj.getJSONArray(name).getInt(i));
+                values.add(artifactsObj.getJSONArray(name).getString(i));
             artifacts.put(name, values);
         }
         backpack = new Vector<>();
